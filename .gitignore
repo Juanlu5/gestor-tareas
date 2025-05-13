@@ -1,0 +1,15 @@
+# IntelliJ IDEA
+.idea/
+*.iml
+
+# Compilados
+/out/
+/target/
+*.class
+
+# Archivos de sistema
+*.log
+*.DS_Store
+
+# Base de datos SQLite
+*.db
