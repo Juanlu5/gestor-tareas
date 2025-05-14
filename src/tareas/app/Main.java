@@ -22,31 +22,53 @@ public class Main {
         int opcion;
         do {
             mostrarMenu();
-            opcion = pedirNumero(sc,"Selecciona una opción ",0,5);
+            opcion = pedirNumero(sc,"Selecciona una opción ",0,6);
 
             switch (opcion){
                 case 1 -> {
                     String titulo = pedirTitulo(sc);
-                    g1.agregarTarea(new Tarea(titulo));
-                    System.out.println("✅ Tarea añadida");
+                    boolean agregada = g1.agregarTarea(new Tarea(titulo));
+                    if (agregada){
+                        System.out.println("✅ Tarea añadida.");
+                    } else {
+                        System.out.println("Acción cancelada, ninguna tarea agregada.");
+                    }
                 }
                 case 2 -> {
                     g1.mostrarListaTareas();
                 }
                 case 3 -> {
                     g1.mostrarListaTareas();
-                    int n = pedirNumero(sc,"Selecciona el número de la tara que quieres marcar como completada. Presiona 0 para volver",1,g1.getTareas().size());
+                    int n = pedirNumero(sc,"Selecciona el número de la tara que quieres marcar como completada. Presiona 0 para volver",0,g1.getTareas().size());
                     g1.marcarTareaCompletada(n);
-                    System.out.println("✅ Tarea marcada como completada");
                 }
                 case 4 -> {
                     g1.mostrarListaTareas();
-                    int n = pedirNumero(sc, "Elige el número de la tarea que quieres eliminar",1,g1.getTareas().size());
-                    g1.borrarTarea(n);
-                    System.out.println("✅ Tarea borrada correctamente");
+                    int n = pedirNumero(sc, "Elige el número de la tarea que quieres eliminar",0,g1.getTareas().size());
+                    boolean borrada = g1.borrarTarea(n);
+                    if (borrada){
+                        System.out.println("Tarea borrada.");
+                    } else {
+                        System.out.println("Acción cancelada, ninguna tarea borrada.");
+                    }
                 }
                 case 5 -> {
                     RepositorioTareas.guardar(g1.getTareas());
+                }
+                case 6 ->{
+                    g1.mostrarListaTareas();
+                    int n = pedirNumero(sc,"Introduce el número de tarea a editar (0 para cancelar)", 0,g1.getTareas().size());
+                    if  (n==0) {
+                        System.out.println("Acción cancelada, ninguna tarea editada.");
+                        break;
+                    }
+                    String nuevoTitulo = pedirTitulo(sc);
+                    boolean editada = g1.editarTarea(n-1, nuevoTitulo);
+                    if (editada){
+                        System.out.println("Edición realizada con éxito.");
+                    } else {
+                        System.out.println("Error, introduce un nombre válido.");
+                    }
                 }
                 case 0 -> {
                     ArchivoTareas.guardar(g1.getTareas(), "prueba.txt");
@@ -66,6 +88,7 @@ public class Main {
                 3. Marcar tarea como completada
                 4. Borrar tarea
                 5. Guardar tareas
+                6. Editar tareas
                 0. Salir
                 """);
     }
@@ -93,10 +116,10 @@ public class Main {
     public static String pedirTitulo(Scanner sc){
         String titulo;
         do {
-            System.out.println("Escribe la tarea que quieres ingresar");
+            System.out.println("Escribe la tarea: ");
             titulo = sc.nextLine().trim();
             if(titulo.isEmpty()){
-                System.out.println("La tarea no puede estar vacía");
+                System.out.println("La tarea no puede estar vacía.");
             }
         } while (titulo.isEmpty());
         return titulo;

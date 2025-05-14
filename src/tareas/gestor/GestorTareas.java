@@ -11,29 +11,22 @@ public class GestorTareas {
         return tareas;
     }
 
-    public void setTareas(ArrayList<Tarea> tareas) {
-        this.tareas = tareas;
-    }
-
-    public void agregarTarea(Tarea t){
-        if (t.titulo.equals("0")){
-            System.out.println("Ninguna tarea agregada");
+    public boolean agregarTarea(Tarea t){
+        if (t.getTitulo().equals("0")){
+            return false;
         } else{
             tareas.add(t);
+            return true;
         }
     }
 
-    public void borrarTarea(int iTarea){
-        if (iTarea == 0) {
-            System.out.println("Ninguna tarea borrada");
-            return;
+    public boolean borrarTarea(int iTarea){
+        if (iTarea <= 0 || iTarea > tareas.size()) {
+            return false;
+        } else {
+            tareas.remove(iTarea-1);
+            return true;
         }
-        if (iTarea < 0 || iTarea > tareas.size()){
-            System.out.println("Error, la tarea número "+iTarea+" no existe");
-            return;
-        }
-        Tarea eliminada = tareas.remove(iTarea-1);
-        System.out.println("Tarea eliminada: \""+eliminada.getTitulo()+ "\"");
     }
 
     public void mostrarListaTareas(){
@@ -43,22 +36,31 @@ public class GestorTareas {
             String estado = t.isCompletada() ? "[X]" : "[ ]";
             System.out.println((i+1)+". "+ estado + " " + t.getTitulo());
         }
+            System.out.println();
     }
-    public void marcarTareaCompletada(int numTarea){
-        if (numTarea==0){
-            System.out.println("Ninguna tarea marcada como completada, volviendo...");
-            return;
+    public boolean marcarTareaCompletada(int iTarea){
+        if (iTarea <=0|| iTarea>tareas.size()){
+            return false;
         }
-        if (numTarea <0|| numTarea>tareas.size()){
-            System.out.println("❌ Error, el número de tarea no existe.");
-            return;
-        }
-        Tarea t = tareas.get(numTarea-1);
+        Tarea t = tareas.get(iTarea-1);
         if (t.isCompletada()){
-            System.out.println("La tarea está ya completada");
+            return false;
         } else{
             t.marcarCompletada();
-            System.out.println("Tarea: \""+t.getTitulo()+"\"");
+            return true;
+        }
+    }
+
+    public boolean editarTarea(int iTarea, String nuevoTitulo){
+
+        if (iTarea < 0 || iTarea > tareas.size()){
+            return false;
+        }
+        if (nuevoTitulo == null || nuevoTitulo.trim().isEmpty()){
+            return false;
+        } else {
+        tareas.get(iTarea).setTitulo(nuevoTitulo);
+        return true;
         }
     }
 }

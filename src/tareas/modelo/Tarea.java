@@ -1,8 +1,8 @@
 package tareas.modelo;
 
 public class Tarea {
-    public String titulo;
-    public boolean completada;
+    private String titulo;
+    private boolean completada;
 
     public Tarea(String titulo) {
         this.titulo = titulo;
