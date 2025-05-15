@@ -40,12 +40,12 @@ public class Main {
                 case 3 -> {
                     g1.mostrarListaTareas();
                     int n = pedirNumero(sc,"Selecciona el número de la tara que quieres marcar como completada. Presiona 0 para volver",0,g1.getTareas().size());
-                    g1.marcarTareaCompletada(n);
+                    g1.marcarTareaCompletada(n-1);
                 }
                 case 4 -> {
                     g1.mostrarListaTareas();
                     int n = pedirNumero(sc, "Elige el número de la tarea que quieres eliminar",0,g1.getTareas().size());
-                    boolean borrada = g1.borrarTarea(n);
+                    boolean borrada = g1.borrarTarea(n-1);
                     if (borrada){
                         System.out.println("Tarea borrada.");
                     } else {
@@ -67,7 +67,7 @@ public class Main {
                     if (editada){
                         System.out.println("Edición realizada con éxito.");
                     } else {
-                        System.out.println("Error, introduce un nombre válido.");
+                        System.out.println("Error, introduce un texto válido.");
                     }
                 }
                 case 0 -> {

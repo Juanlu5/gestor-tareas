@@ -21,10 +21,10 @@ public class GestorTareas {
     }
 
     public boolean borrarTarea(int iTarea){
-        if (iTarea <= 0 || iTarea > tareas.size()) {
+        if (iTarea < 0 || iTarea >= tareas.size()) {
             return false;
         } else {
-            tareas.remove(iTarea-1);
+            tareas.remove(iTarea);
             return true;
         }
     }
@@ -39,10 +39,10 @@ public class GestorTareas {
             System.out.println();
     }
     public boolean marcarTareaCompletada(int iTarea){
-        if (iTarea <=0|| iTarea>tareas.size()){
+        if (iTarea < 0|| iTarea>=tareas.size()){
             return false;
         }
-        Tarea t = tareas.get(iTarea-1);
+        Tarea t = tareas.get(iTarea);
         if (t.isCompletada()){
             return false;
         } else{
@@ -53,7 +53,7 @@ public class GestorTareas {
 
     public boolean editarTarea(int iTarea, String nuevoTitulo){
 
-        if (iTarea < 0 || iTarea > tareas.size()){
+        if (iTarea < 0 || iTarea >= tareas.size()){
             return false;
         }
         if (nuevoTitulo == null || nuevoTitulo.trim().isEmpty()){
