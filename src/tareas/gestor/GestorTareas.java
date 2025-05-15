@@ -11,21 +11,16 @@ public class GestorTareas {
         return tareas;
     }
 
-    public boolean agregarTarea(Tarea t){
-        if (t.getTitulo().equals("0")){
-            return false;
-        } else{
-            tareas.add(t);
-            return true;
-        }
+    public void agregarTarea(Tarea t){
+        tareas.add(t);
     }
 
-    public boolean borrarTarea(int iTarea){
+    public ResultadoOperacion borrarTarea(int iTarea){
         if (iTarea < 0 || iTarea >= tareas.size()) {
-            return false;
+            return ResultadoOperacion.NO_EXISTE;
         } else {
             tareas.remove(iTarea);
-            return true;
+            return ResultadoOperacion.EXITO;
         }
     }
 
@@ -38,29 +33,29 @@ public class GestorTareas {
         }
             System.out.println();
     }
-    public boolean marcarTareaCompletada(int iTarea){
+    public ResultadoOperacion marcarTareaCompletada(int iTarea){
         if (iTarea < 0|| iTarea>=tareas.size()){
-            return false;
+            return ResultadoOperacion.NO_EXISTE;
         }
         Tarea t = tareas.get(iTarea);
         if (t.isCompletada()){
-            return false;
+            return ResultadoOperacion.YA_COMPLETADA;
         } else{
             t.marcarCompletada();
-            return true;
+            return ResultadoOperacion.EXITO;
         }
     }
 
-    public boolean editarTarea(int iTarea, String nuevoTitulo){
+    public ResultadoOperacion editarTarea(int iTarea, String nuevoTitulo){
 
         if (iTarea < 0 || iTarea >= tareas.size()){
-            return false;
+            return ResultadoOperacion.NO_EXISTE;
         }
         if (nuevoTitulo == null || nuevoTitulo.trim().isEmpty()){
-            return false;
+            return ResultadoOperacion.VACIA;
         } else {
         tareas.get(iTarea).setTitulo(nuevoTitulo);
-        return true;
+        return ResultadoOperacion.EXITO;
         }
     }
 }

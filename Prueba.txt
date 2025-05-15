@@ -1,4 +1,3 @@
-0;Meter el proyecto en git
+1;Meter el proyecto en git
 0;Añadir función de volver en el menú principal
 1;Añadiendo función editar tareas
-1;JJaa
