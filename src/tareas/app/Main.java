@@ -1,7 +1,6 @@
 package tareas.app;
 
 import tareas.gestor.ResultadoOperacion;
-import tareas.util.ArchivoTareas;
 import tareas.gestor.GestorTareas;
 import tareas.modelo.Tarea;
 import tareas.util.RepositorioTareas;
@@ -87,7 +86,7 @@ public class Main {
                     }
                 }
                 case 0 -> {
-                    ArchivoTareas.guardar(g1.getTareas(), "prueba.txt");
+                    RepositorioTareas.guardar(g1.getTareas());
                     System.out.println("Saliendo...");
                 }
             }
