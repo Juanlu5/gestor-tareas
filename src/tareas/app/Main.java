@@ -108,35 +108,5 @@ public class Main {
                 """);
     }
 
-    public static int pedirNumero (Scanner sc, String mensaje, int min, int max){
-        int numero = -1;
-        boolean valido = false;
-        while (!valido){
-            System.out.println(mensaje);
-            if(sc.hasNextInt()){
-                numero = sc.nextInt();
-                sc.nextLine();
-                if(numero >= min && numero <= max){
-                    valido = true;
-                } else {
-                    System.out.println("❌ El número debe estar entre "+min+ " y "+max+".");
-                }
-            } else{
-                System.out.println("❌ Entrada inválida. Introduce un número.");
-                sc.nextLine();
-            }
-        }
-        return numero;
-    }
-    public static String pedirTitulo(Scanner sc){
-        String titulo;
-        do {
-            System.out.println("Escribe la tarea: ");
-            titulo = sc.nextLine().trim();
-            if(titulo.isEmpty()){
-                System.out.println("La tarea no puede estar vacía.");
-            }
-        } while (titulo.isEmpty());
-        return titulo;
-    }
+
 }
