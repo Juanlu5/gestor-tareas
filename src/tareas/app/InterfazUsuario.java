@@ -2,6 +2,7 @@ package tareas.app;
 
 import tareas.gestor.GestorTareas;
 import tareas.gestor.ResultadoOperacion;
+import tareas.modelo.Tarea;
 import tareas.util.RepositorioTareas;
 
 import java.util.Scanner;
@@ -45,12 +46,43 @@ public class InterfazUsuario {
             case 2 -> gestor.mostrarListaTareas();
             case 3 -> marcarCompletada();
             case 4 -> eliminarTarea();
-            case 5 -> RepositorioTareas.guardar();
+            case 5 -> RepositorioTareas.guardar(gestor.getTareas());
             case 6 -> editarTarea();
             case 0 -> {
                 RepositorioTareas.guardar(gestor.getTareas());
                 System.out.println("Saliendo...");
             }
+        }
+    }
+
+    private void agregarTarea(){
+        String titulo = pedirTitulo();
+            if(titulo.equals("0")) return;
+            gestor.agregarTarea(new Tarea(titulo));
+    }
+
+    private void marcarCompletada(){
+        gestor.mostrarListaTareas();
+        int n = pedirNumero("Selecciona la tarea que quieres marcar como completada.", 0, gestor.getTareas().size());
+        if (n==0) return;
+        ResultadoOperacion resultado = gestor.marcarTareaCompletada(n-1);
+        switch (resultado){
+            case NO_EXISTE -> System.out.println("Tarea no encontrada.");
+            case YA_COMPLETADA -> System.out.println("Esta tarea está ya completada.");
+            case EXITO -> System.out.println("Tarea marcada como completada.");
+            default -> System.out.println("Algo salió mal.");
+        }
+    }
+
+    private void eliminarTarea(){
+        gestor.mostrarListaTareas();
+        int n = pedirNumero("Selecciona la tarea que quieres eliminar.",0,gestor.getTareas().size());
+        if(n==0) return;
+        ResultadoOperacion resultado = gestor.borrarTarea(n-1);
+        switch (resultado){
+            case NO_EXISTE -> System.out.println("Tarea no encontrada.");
+            case EXITO -> System.out.println("Tarea eliminada.");
+            default -> System.out.println("Algo salió mal.");
         }
     }
 
@@ -75,10 +107,10 @@ public class InterfazUsuario {
             if(sc.hasNextInt()) {
                 opcion = sc.nextInt();
                 sc.nextLine();
-                if(opcion>min && opcion<max){
+                if(opcion>=min && opcion<=max){
                     return opcion;
                 } else {
-                    System.out.println("❌ Debe estar entre \" + min + \" y \" + max + \".");
+                    System.out.println("❌ Debe estar entre " + min + " y " + max + ".");
                 }
             } else {
                 System.out.println("❌ Entrada inválida.");
