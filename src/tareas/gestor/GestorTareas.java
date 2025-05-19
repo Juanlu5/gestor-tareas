@@ -11,8 +11,10 @@ public class GestorTareas {
         return tareas;
     }
 
-    public void agregarTarea(Tarea t){
+    public ResultadoOperacion agregarTarea(Tarea t){
+        if(t == null || t.getTitulo().trim().isEmpty()) return ResultadoOperacion.VACIA;
         tareas.add(t);
+        return ResultadoOperacion.EXITO;
     }
 
     public ResultadoOperacion borrarTarea(int iTarea){
