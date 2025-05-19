@@ -10,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 public class GestorTareasTest {
 
     @Test
-    public void testAgregarTareaValida(){
+    void testAgregarTareaValida(){
         GestorTareas gestor = new GestorTareas();
         Tarea tarea = new Tarea("Aprender JUnit");
 
@@ -22,7 +22,7 @@ public class GestorTareasTest {
     }
 
     @Test
-    public void testAgregarTareaVacia(){
+    void testAgregarTareaVacia(){
         GestorTareas gestor = new GestorTareas();
         Tarea tarea= new Tarea(" ");
 
@@ -33,7 +33,7 @@ public class GestorTareasTest {
     }
 
     @Test
-    public void testAgregarTareaNull(){
+    void testAgregarTareaNull(){
         GestorTareas gestor = new GestorTareas();
 
         ResultadoOperacion resultado = gestor.agregarTarea(null);
@@ -43,7 +43,7 @@ public class GestorTareasTest {
     }
 
     @Test
-    public void testBorrarTareaValida(){
+    void testBorrarTareaValida(){
         GestorTareas gestor = new GestorTareas();
         Tarea tarea = new Tarea("Tarea de prueba");
         gestor.agregarTarea(tarea);
@@ -55,7 +55,7 @@ public class GestorTareasTest {
     }
 
     @Test
-    public void testBorrarTareaInvalida(){
+    void testBorrarTareaInvalida(){
         GestorTareas gestor = new GestorTareas();
 
         ResultadoOperacion resultado = gestor.borrarTarea(0);
@@ -64,7 +64,7 @@ public class GestorTareasTest {
     }
 
     @Test
-    public void testMarcarTareaCompletadaValida(){
+    void testMarcarTareaCompletadaValida(){
         GestorTareas gestor = new GestorTareas();
         gestor.agregarTarea(new Tarea("Tarea para marcar completada"));
 
@@ -75,7 +75,7 @@ public class GestorTareasTest {
     }
 
     @Test
-    public void marcarTareaCompletadaYaCompletada(){
+    void marcarTareaCompletadaYaCompletada(){
         GestorTareas gestor = new GestorTareas();
         gestor.agregarTarea(new Tarea("Tarea ya completada"));
         gestor.marcarTareaCompletada(0);
@@ -83,5 +83,65 @@ public class GestorTareasTest {
         ResultadoOperacion resultado = gestor.marcarTareaCompletada(0);
 
         assertEquals(ResultadoOperacion.YA_COMPLETADA, resultado);
+    }
+
+    @Test
+    void marcarTareaCompletadaInexistente(){
+        GestorTareas gestor = new GestorTareas();
+
+        ResultadoOperacion resultado = gestor.marcarTareaCompletada(5);
+
+        assertEquals(ResultadoOperacion.NO_EXISTE, resultado);
+    }
+
+    @Test
+    void editarTareaCorrectamente(){
+        GestorTareas gestor = new GestorTareas();
+        gestor.agregarTarea(new Tarea("Tarea a editar"));
+
+        ResultadoOperacion resultado = gestor.editarTarea(0, "Tarea editada");
+
+        assertEquals(ResultadoOperacion.EXITO, resultado);
+        assertEquals("Tarea editada",gestor.getTareas().get(0).getTitulo());
+    }
+
+    @Test
+    void editarTareaInexistente(){
+        GestorTareas gestor = new GestorTareas();
+
+        ResultadoOperacion resultado = gestor.editarTarea(5,"Tarea inexistente editada");
+
+        assertEquals(ResultadoOperacion.NO_EXISTE, resultado);
+    }
+
+    @Test
+    void editarTareaConTituloVacio(){
+        GestorTareas gestor = new GestorTareas();
+        gestor.agregarTarea(new Tarea("Tarea a editar"));
+
+        ResultadoOperacion resultado = gestor.editarTarea(0,"");
+
+        assertEquals(ResultadoOperacion.VACIA, resultado);
+    }
+
+    @Test
+    void nuevaTareaDebeTenerTituloYNoEstarCompletada(){
+        Tarea t = new Tarea("Tarea prueba");
+        assertEquals("Tarea prueba", t.getTitulo());
+        assertFalse(t.isCompletada());
+    }
+
+    @Test
+    void marcarTareaComoCompletada(){
+        Tarea t = new Tarea("Tarea para completar");
+        t.marcarCompletada();
+        assertTrue(t.isCompletada());
+    }
+
+    @Test
+    void cambiarTituloDeTarea(){
+        Tarea t = new Tarea("Tarea para cambiar título");
+        t.setTitulo("Tarea con título cambiado");
+        assertEquals("Tarea con título cambiado", t.getTitulo());
     }
 }
