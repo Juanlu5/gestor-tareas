@@ -7,7 +7,11 @@ import java.sql.*;
 import java.util.ArrayList;
 
 public class RepositorioTareas {
-    private static final String url = "jdbc:sqlite:tareas.db";
+    private static String url = "jdbc:sqlite:tareas.db";
+
+    public static void usarBaseDeDatos(String nuevaUrl){
+        url = nuevaUrl;
+    }
 
     public static void inicializarBaseDeDatos(){
         try (Connection conn = DriverManager.getConnection(url);
@@ -36,7 +40,6 @@ public class RepositorioTareas {
                 }
             }
 
-            System.out.println("Tareas guardadas en la base de datos.");
         } catch (SQLException e) {
             System.out.println("Error al guardar tareas "+ e.getMessage());
         }
@@ -60,7 +63,6 @@ public class RepositorioTareas {
                 tareas.add(t);
             }
 
-            System.out.println("Tareas cargadas desde la base de datos.");
         } catch (SQLException e){
             System.out.println("Error al cargar tareas: "+e.getMessage());
         }
