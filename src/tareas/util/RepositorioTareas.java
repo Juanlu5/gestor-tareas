@@ -26,20 +26,31 @@ public class RepositorioTareas {
         }
     }
     public static void guardar(ArrayList<Tarea> tareas){
-        try (Connection conn = DriverManager.getConnection(url);
-            Statement st = conn.createStatement()){
+        try (Connection conn = DriverManager.getConnection(url)){
+            String instertSql = "INSERT INTO tareas (titulo, completada) VALUES (?, ?)";
+            String updateSql = "UPDATE tareas SET titulo = ?, completada = ?, WHERE id = ?";
 
-            st.execute("DELETE FROM tarea");
-
-            String sql = "INSERT INTO tarea (titulo, completada) VALUES (?, ?)";
-            try (PreparedStatement pst = conn.prepareStatement(sql)){
-                for (Tarea t : tareas){
-                    pst.setString(1, t.getTitulo());
-                    pst.setInt(2, t.isCompletada() ? 1 : 0);
-                    pst.executeUpdate();
+            for(Tarea t: tareas){
+                if(t.getId()==-1){
+                    try(PreparedStatement pst = conn.prepareStatement(instertSql,Statement.RETURN_GENERATED_KEYS)){
+                        pst.setString(1, t.getTitulo());
+                        pst.setInt(2, t.isCompletada() ? 1 : 0);
+                        pst.executeUpdate();
+                        try(ResultSet keys = pst.getGeneratedKeys()) {
+                            if(keys.next()){
+                                t.setId(keys.getInt(1));
+                            }
+                        }
+                    }
+                } else {
+                    try(PreparedStatement pst = conn.prepareStatement(updateSql)){
+                        pst.setString(1, t.getTitulo());
+                        pst.setInt(2, t.isCompletada() ? 1 : 0);
+                        pst.setInt(3, t.getId());
+                        pst.executeUpdate();
+                    }
                 }
             }
-
         } catch (SQLException e) {
             System.out.println("Error al guardar tareas "+ e.getMessage());
         }
@@ -53,13 +64,11 @@ public class RepositorioTareas {
             ResultSet rs = st.executeQuery("SELECT * FROM tarea")){
 
             while (rs.next()) {
+                int id = rs.getInt("id");
                 String titulo = rs.getString("titulo");
                 boolean completada = rs.getInt("completada")== 1;
 
-                Tarea t = new Tarea(titulo);
-                if(completada){
-                    t.marcarCompletada();
-                }
+                Tarea t = new Tarea(id, titulo, completada);
                 tareas.add(t);
             }
 
@@ -68,5 +77,16 @@ public class RepositorioTareas {
         }
 
         return tareas;
+    }
+
+    public static void eliminarTarea(int id){
+        String sql = "DELETE FROM tareas WHERE id = ?";
+        try(Connection conn = DriverManager.getConnection(url);
+        PreparedStatement pst = conn.prepareStatement(sql)){
+            pst.setInt(1, id);
+            pst.executeUpdate();
+        } catch (SQLException e) {
+            System.out.println("Error al eliminar tarea: " + e.getMessage());
+        }
     }
 }
