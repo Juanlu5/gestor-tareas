@@ -36,4 +36,29 @@ class RepositorioTareasTest {
         assertEquals("Segunda tarea", resultado.get(1).getTitulo());
         assertTrue(resultado.get(1).isCompletada());
     }
+
+    @Test
+    void actualizarTareaExistente(){
+        ArrayList<Tarea> tareas = new ArrayList<>();
+        Tarea tarea = new Tarea("Tarea original");
+        tareas.add(tarea);
+
+        RepositorioTareas.guardar(tareas);
+        int idAsignado = tarea.getId();
+
+        tarea.setTitulo("Tarea actualizada");
+        tarea.setCompletada(true);
+
+        RepositorioTareas.guardar(tareas);
+
+        ArrayList<Tarea> resultado = RepositorioTareas.cargar();
+
+        assertEquals(1,resultado.size());
+        Tarea cargada = resultado.get(0);
+
+        assertEquals(idAsignado,cargada.getId());
+        assertEquals("Tarea actualizada", cargada.getTitulo());
+        assertTrue(cargada.isCompletada());
+
+    }
 }

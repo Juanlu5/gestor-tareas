@@ -28,7 +28,7 @@ public class RepositorioTareas {
     public static void guardar(ArrayList<Tarea> tareas){
         try (Connection conn = DriverManager.getConnection(url)){
             String instertSql = "INSERT INTO tareas (titulo, completada) VALUES (?, ?)";
-            String updateSql = "UPDATE tareas SET titulo = ?, completada = ?, WHERE id = ?";
+            String updateSql = "UPDATE tareas SET titulo = ?, completada = ? WHERE id = ?";
 
             for(Tarea t: tareas){
                 if(t.getId()==-1){
