@@ -18,7 +18,7 @@ public class RepositorioTareas {
              Statement st = conn.createStatement()) {
 
             st.execute("CREATE TABLE IF NOT EXISTS " +
-                    "tarea (id INTEGER PRIMARY KEY AUTOINCREMENT," +
+                    "tareas (id INTEGER PRIMARY KEY AUTOINCREMENT," +
                     " titulo TEXT NOT NULL, " +
                     "completada INTEGER NOT NULL)");
         } catch (SQLException e) {
@@ -61,7 +61,7 @@ public class RepositorioTareas {
 
         try (Connection conn = DriverManager.getConnection(url);
             Statement st = conn.createStatement();
-            ResultSet rs = st.executeQuery("SELECT * FROM tarea")){
+            ResultSet rs = st.executeQuery("SELECT * FROM tareas")){
 
             while (rs.next()) {
                 int id = rs.getInt("id");

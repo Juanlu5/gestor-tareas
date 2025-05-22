@@ -59,13 +59,14 @@ public class InterfazUsuario {
         String titulo = pedirTitulo();
             if(titulo.equals("0")) return;
             gestor.agregarTarea(new Tarea(titulo));
+            RepositorioTareas.guardar(gestor.getTareas());
     }
 
     private void marcarCompletada(){
         gestor.mostrarListaTareas();
-        int n = pedirNumero("Selecciona la tarea que quieres marcar como completada.", 0, gestor.getTareas().size());
+        int n = pedirNumero("Selecciona el id de la tarea que quieres marcar como completada.", 0, Integer.MAX_VALUE);
         if (n==0) return;
-        ResultadoOperacion resultado = gestor.marcarTareaCompletada(n-1);
+        ResultadoOperacion resultado = gestor.marcarTareaCompletadaPorId(n);
         switch (resultado){
             case NO_EXISTE -> System.out.println("Tarea no encontrada.");
             case YA_COMPLETADA -> System.out.println("Esta tarea está ya completada.");
@@ -76,9 +77,9 @@ public class InterfazUsuario {
 
     private void eliminarTarea(){
         gestor.mostrarListaTareas();
-        int n = pedirNumero("Selecciona la tarea que quieres eliminar.",0,gestor.getTareas().size());
+        int n = pedirNumero("Selecciona el id de la tarea que quieres eliminar.",0,Integer.MAX_VALUE);
         if(n==0) return;
-        ResultadoOperacion resultado = gestor.borrarTarea(n-1);
+        ResultadoOperacion resultado = gestor.borrarTareaPorId(n);
         switch (resultado){
             case NO_EXISTE -> System.out.println("Tarea no encontrada.");
             case EXITO -> System.out.println("Tarea eliminada.");
@@ -88,10 +89,10 @@ public class InterfazUsuario {
 
     private void editarTarea(){
         gestor.mostrarListaTareas();
-        int n = pedirNumero("Selecciona la tarea que quieres editar", 0, gestor.getTareas().size());
+        int n = pedirNumero("Selecciona el id de la tarea que quieres editar", 0, Integer.MAX_VALUE);
         if (n==0) return;
         String nuevoTitulo = pedirTitulo();
-        ResultadoOperacion resultado = gestor.editarTarea(n-1,nuevoTitulo);
+        ResultadoOperacion resultado = gestor.editarTareaPorId(n,nuevoTitulo);
         switch(resultado){
             case VACIA -> System.out.println("El título no puede estar vacío.");
             case NO_EXISTE -> System.out.println("Tarea no encontrada.");
@@ -110,7 +111,7 @@ public class InterfazUsuario {
                 if(opcion>=min && opcion<=max){
                     return opcion;
                 } else {
-                    System.out.println("❌ Debe estar entre " + min + " y " + max + ".");
+                    System.out.println("❌ Tarea no encontrada, vuelve a intentarlo.");
                 }
             } else {
                 System.out.println("❌ Entrada inválida.");
