@@ -64,7 +64,7 @@ public class InterfazUsuario {
 
     private void marcarCompletada(){
         gestor.mostrarListaTareas();
-        int n = pedirNumero("Selecciona el id de la tarea que quieres marcar como completada.", 0, Integer.MAX_VALUE);
+        int n = pedirNumero("Selecciona el id de la tarea que quieres marcar como completada.");
         if (n==0) return;
         ResultadoOperacion resultado = gestor.marcarTareaCompletadaPorId(n);
         switch (resultado){
@@ -77,7 +77,7 @@ public class InterfazUsuario {
 
     private void eliminarTarea(){
         gestor.mostrarListaTareas();
-        int n = pedirNumero("Selecciona el id de la tarea que quieres eliminar.",0,Integer.MAX_VALUE);
+        int n = pedirNumero("Selecciona el id de la tarea que quieres eliminar.");
         if(n==0) return;
         ResultadoOperacion resultado = gestor.borrarTareaPorId(n);
         switch (resultado){
@@ -89,7 +89,7 @@ public class InterfazUsuario {
 
     private void editarTarea(){
         gestor.mostrarListaTareas();
-        int n = pedirNumero("Selecciona el id de la tarea que quieres editar", 0, Integer.MAX_VALUE);
+        int n = pedirNumero("Selecciona el id de la tarea que quieres editar");
         if (n==0) return;
         String nuevoTitulo = pedirTitulo();
         ResultadoOperacion resultado = gestor.editarTareaPorId(n,nuevoTitulo);
@@ -101,18 +101,14 @@ public class InterfazUsuario {
         }
     }
 
-    private int pedirNumero(String mensaje, int min, int max) {
-        int opcion;
+    private int pedirNumero(String mensaje) {
+        int id;
         while(true){
             System.out.println(mensaje);
             if(sc.hasNextInt()) {
-                opcion = sc.nextInt();
+                id = sc.nextInt();
                 sc.nextLine();
-                if(opcion>=min && opcion<=max){
-                    return opcion;
-                } else {
-                    System.out.println("❌ Tarea no encontrada, vuelve a intentarlo.");
-                }
+                return id;
             } else {
                 System.out.println("❌ Entrada inválida.");
                 sc.nextLine();
