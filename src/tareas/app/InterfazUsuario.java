@@ -20,8 +20,12 @@ public class InterfazUsuario {
         int opcion;
         do{
             mostrarMenu();
-            opcion = pedirNumero("Selecciona una opción", 0, 6);
-            manejarOpcion(opcion);
+            opcion = pedirNumero("Selecciona una opción");
+            if(opcion > 0 && opcion <= 6){
+                manejarOpcion(opcion);
+            } else{
+                System.out.println("Elige una opción válida");
+            }
         } while (opcion != 0);
         sc.close();
     }
