@@ -1,5 +1,6 @@
 package tareas.util;
 
+import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import tareas.modelo.Tarea;
@@ -14,6 +15,11 @@ class RepositorioTareasTest {
     void prepararBaseDeDatos(){
         RepositorioTareas.usarBaseDeDatos("jdbc:sqlite::memory:");
         RepositorioTareas.inicializarBaseDeDatos();
+    }
+
+    @AfterEach
+    void cerrarConexion(){
+        RepositorioTareas.cerrarConexion();
     }
 
     @Test
@@ -44,7 +50,7 @@ class RepositorioTareasTest {
         tareas.add(tarea);
 
         RepositorioTareas.guardar(tareas);
-        int idAsignado = tarea.getId();
+        int idAsignado = tareas.get(0).getId();
 
         tarea.setTitulo("Tarea actualizada");
         tarea.setCompletada(true);
@@ -60,5 +66,74 @@ class RepositorioTareasTest {
         assertEquals("Tarea actualizada", cargada.getTitulo());
         assertTrue(cargada.isCompletada());
 
+    }
+    @Test
+    void losIdsSeAsignanAlGuardar(){
+        Tarea t1 = new Tarea("Tarea guardada 1");
+        Tarea t2 = new Tarea("Tarea guardada 2");
+
+        ArrayList<Tarea> tareas = new ArrayList<>();
+        tareas.add(t1);
+        tareas.add(t2);
+
+        RepositorioTareas.guardar(tareas);
+
+        assertNotEquals(-1, t1.getId());
+        assertNotEquals(-1, t2.getId());
+        assertNotEquals(t1.getId(), t2.getId());
+    }
+
+    @Test
+    void editarTareasPorIdPersistida(){
+        Tarea t = new Tarea("Tarea a editar");
+        ArrayList<Tarea> tareas = new ArrayList<>();
+        tareas.add(t);
+        RepositorioTareas.guardar(tareas);
+
+        int id = t.getId();
+
+        t.setTitulo("Tarea editada");
+
+        RepositorioTareas.guardar(tareas);
+        tareas = RepositorioTareas.cargar();
+
+        Tarea resultado = tareas.stream().filter(x -> x.getId()==id).findFirst().orElse(null);
+
+        assertNotNull(resultado);
+        assertEquals("Tarea editada",resultado.getTitulo());
+    }
+    @Test
+    void marcarTareaComoCompletadaPorIdPersistida(){
+        Tarea t = new Tarea("Tarea para completar");
+        ArrayList<Tarea> tareas = new ArrayList<>();
+        tareas.add(t);
+        RepositorioTareas.guardar(tareas);
+
+        int id = t.getId();
+
+        t.marcarCompletada();
+        RepositorioTareas.guardar(tareas);
+
+        ArrayList<Tarea> cargada = RepositorioTareas.cargar();
+
+        Tarea resultado = cargada.stream().filter(x -> x.getId()==id).findFirst().orElse(null);
+        assertNotNull(resultado);
+        assertTrue(resultado.isCompletada());
+        assertEquals(id, resultado.getId());
+    }
+
+    @Test
+    void eliminarTareaPorIdPersistida(){
+        Tarea t = new Tarea("Tarea para eliminar");
+        ArrayList<Tarea> tareas = new ArrayList<>();
+        tareas.add(t);
+        RepositorioTareas.guardar(tareas);
+
+        int id = t.getId();
+
+        RepositorioTareas.eliminarTarea(id);
+
+        ArrayList<Tarea> resultado = RepositorioTareas.cargar();
+        assertTrue(resultado.stream().noneMatch(tarea -> tarea.getId()==id));
     }
 }
