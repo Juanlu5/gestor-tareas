@@ -5,6 +5,7 @@ import tareas.gestor.ResultadoOperacion;
 import tareas.modelo.Tarea;
 import tareas.util.RepositorioTareas;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class InterfazUsuario {
@@ -21,7 +22,7 @@ public class InterfazUsuario {
         do{
             mostrarMenu();
             opcion = pedirNumero("Selecciona una opción");
-            if(opcion >= 0 && opcion <= 6){
+            if(opcion >= 0 && opcion <= 8){
                 manejarOpcion(opcion);
             } else{
                 System.out.println("Elige una opción válida");
@@ -42,6 +43,9 @@ public class InterfazUsuario {
                 4. Borrar tarea
                 5. Guardar tareas
                 6. Editar tareas
+                7. Mostrar tareas completadas
+                8. Mostrar tareas pendientes
+                0. Salir
                 """);
     }
 
@@ -53,6 +57,8 @@ public class InterfazUsuario {
             case 4 -> eliminarTarea();
             case 5 -> RepositorioTareas.guardar(gestor.getTareas());
             case 6 -> editarTarea();
+            case 7 -> obtenerTareasCompletadas();
+            case 8 -> obtenerTareasPendientes();
             }
         }
 
@@ -128,6 +134,21 @@ public class InterfazUsuario {
         } while (titulo.isEmpty());
         return titulo;
     }
+    private void obtenerTareasCompletadas(){
+        ArrayList<Tarea> completadas = gestor.obtenerCompletadas();
+        for(Tarea t : completadas){
+            String estado = t.isCompletada() ? "[X]" : "[ ]";
+            System.out.println("("+t.getId()+") " + estado + " " + t.getTitulo());
+        }
+        System.out.println();
+    }
 
-
+    private void obtenerTareasPendientes(){
+        ArrayList<Tarea> pendientes = gestor.obtenerPendientes();
+        for(Tarea t : pendientes){
+            String estado = t.isCompletada() ? "[X]" : "[ ]";
+            System.out.println("("+t.getId()+") " + estado + " " + t.getTitulo());
+        }
+        System.out.println();
+    }
 }
