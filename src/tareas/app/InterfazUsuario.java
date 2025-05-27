@@ -21,12 +21,14 @@ public class InterfazUsuario {
         do{
             mostrarMenu();
             opcion = pedirNumero("Selecciona una opción");
-            if(opcion > 0 && opcion <= 6){
+            if(opcion >= 0 && opcion <= 6){
                 manejarOpcion(opcion);
             } else{
                 System.out.println("Elige una opción válida");
             }
         } while (opcion != 0);
+        RepositorioTareas.guardar(gestor.getTareas());
+        System.out.println("Saliendo...");
         sc.close();
     }
 
@@ -40,7 +42,6 @@ public class InterfazUsuario {
                 4. Borrar tarea
                 5. Guardar tareas
                 6. Editar tareas
-                0. Salir
                 """);
     }
 
@@ -52,12 +53,8 @@ public class InterfazUsuario {
             case 4 -> eliminarTarea();
             case 5 -> RepositorioTareas.guardar(gestor.getTareas());
             case 6 -> editarTarea();
-            case 0 -> {
-                RepositorioTareas.guardar(gestor.getTareas());
-                System.out.println("Saliendo...");
             }
         }
-    }
 
     private void agregarTarea(){
         String titulo = pedirTitulo();

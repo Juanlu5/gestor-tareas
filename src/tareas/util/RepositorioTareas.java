@@ -48,6 +48,31 @@ public class RepositorioTareas {
         inicializarBaseDeDatos();
         try {
             Connection conn = obtenerConexion();
+
+            ArrayList<Integer> idsEnBD = new ArrayList<>();
+            try(Statement st =conn.createStatement();
+                ResultSet rs = st.executeQuery("SELECT id FROM tareas")){
+                while (rs.next()){
+                    idsEnBD.add(rs.getInt("id"));
+                }
+            }
+
+            ArrayList<Integer> idsActuales = new ArrayList<>();
+            for(Tarea t : tareas){
+                if(t.getId()!=-1){
+                    idsActuales.add(t.getId());
+                }
+            }
+
+            for (int idDB : idsEnBD){
+                if(!idsActuales.contains(idDB)){
+                    try(PreparedStatement ps = conn.prepareStatement("DELETE FROM tareas WHERE id = ?")){
+                        ps.setInt(1, idDB);
+                        ps.executeUpdate();
+                    }
+                }
+            }
+
             for (Tarea t : tareas) {
                 if (t.getId() == -1) {
                     PreparedStatement ps = conn.prepareStatement(
