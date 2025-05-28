@@ -77,3 +77,11 @@ Exportar tareas a .csv.
 ## Licencia
 MIT License
 
+## Sobre mí
+
+Soy Juan Luis, desarrollador junior de Java. Este proyecto forma parte de mi portafolio para buscar mi primera oportunidad profesional en desarrollo backend.
+
+Estoy abierto a oportunidades laborales, prácticas o formaciones duales.
+
+Puedes contactarme en: [juanluu.ra@gmail.com](mailto:juanluu.ra@gmail.com)  
+🔗 LinkedIn: [https://www.linkedin.com/in/juan-luis-romero-algaba-488546330](https://www.www.linkedin.com/in/juan-luis-romero-algaba-488546330)
