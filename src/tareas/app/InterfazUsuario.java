@@ -135,19 +135,19 @@ public class InterfazUsuario {
         return titulo;
     }
     private void obtenerTareasCompletadas(){
+        System.out.println("TAREAS COMPLETADAS:");
         ArrayList<Tarea> completadas = gestor.obtenerCompletadas();
         for(Tarea t : completadas){
-            String estado = t.isCompletada() ? "[X]" : "[ ]";
-            System.out.println("("+t.getId()+") " + estado + " " + t.getTitulo());
+            System.out.println("("+t.getId()+") [X] " + t.getTitulo());
         }
         System.out.println();
     }
 
     private void obtenerTareasPendientes(){
+        System.out.println("TAREAS PENDIENTES:");
         ArrayList<Tarea> pendientes = gestor.obtenerPendientes();
         for(Tarea t : pendientes){
-            String estado = t.isCompletada() ? "[X]" : "[ ]";
-            System.out.println("("+t.getId()+") " + estado + " " + t.getTitulo());
+            System.out.println("("+t.getId()+") [ ] " + t.getTitulo());
         }
         System.out.println();
     }
