@@ -15,9 +15,11 @@ Pruebas unitarias con JUnit 5.
 
 ## Capturas de pantalla
 
-![Menú de tareas](/imagenes/Captura%20Gestor%202.png)
+imagenes/Captura%20Gestor.png
 
-![Menú de tareas](/imagenes/Captura%20Gestor%20.png)
+![Menú de tareas](/imagenes/Captura%20Gestor.png)
+
+![Menú de tareas](/imagenes/Captura%20Gestor%202.png)
 
 
 ## Ejemplo de uso
